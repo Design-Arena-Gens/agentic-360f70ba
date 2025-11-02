@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Trend {
+  id              String   @id @default(cuid())
+  source          String
+  title           String
+  summary         String?
+  url             String?
+  language        String   @default("en")
+  region          String   @default("global")
+  category        String   @default("general")
+  popularityScore Int?
+  fetchedAt       DateTime @default(now())
+  approved        Boolean  @default(false)
+  posts           GeneratedContent[]
+}
+
+model GeneratedContent {
+  id          String        @id @default(cuid())
+  trend       Trend?        @relation(fields: [trendId], references: [id])
+  trendId     String?
+  platform    String
+  tone        String?
+  voice       String?
+  hashtags    String?
+  content     String
+  imageUrl    String?
+  createdAt   DateTime      @default(now())
+  scheduled   ScheduledPost[]
+}
+
+model ScheduledPost {
+  id            String            @id @default(cuid())
+  platform      String
+  account       PlatformAccount?  @relation(fields: [accountId], references: [id])
+  accountId     String?
+  payload       String
+  imageUrl      String?
+  scheduledFor  DateTime
+  status        PostStatus        @default(PENDING)
+  resultMessage String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  content       GeneratedContent? @relation(fields: [contentId], references: [id])
+  contentId     String?
+}
+
+model PlatformAccount {
+  id          String          @id @default(cuid())
+  platform    String
+  accountName String
+  accessToken String?
+  refreshToken String?
+  metadata    Json?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  posts       ScheduledPost[]
+}
+
+enum PostStatus {
+  PENDING
+  SCHEDULED
+  POSTED
+  FAILED
+  SKIPPED
+}

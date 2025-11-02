@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply min-h-screen bg-slate-950 text-slate-100 antialiased;
+}
+
+.glass {
+  @apply rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-blue-500/10 backdrop-blur-xl;
+}
+
+.card {
+  @apply rounded-xl border border-white/10 bg-slate-900/80 p-6 shadow-lg shadow-black/20 backdrop-blur;
+}
+
+.pill {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-wide text-slate-200;
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}

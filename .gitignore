@@ -897,6 +897,8 @@ config/database.yml
 *.crt
 *.csr
 *.der
+webapp/dev.db
+webapp/dev.db-journal
 
 # Backup files
 *.bak
